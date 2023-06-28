@@ -233,10 +233,9 @@ def get_director(nombre_director):
         return f"Este director no ha dirigido ninguna de las películas de la lista"
 
 
-@app.get("/recomendacion/{titulo}")
+@app.get("/recomendacion/{titulo, n}")
 # Función para obtener películas similares
 def obtener_peliculas_similares(titulo, n=5):
-    # Cargar los datos
     data_movies="db_movies/datos_peliculas.csv"
     data = pd.read_csv(DOWNLOAD_ROOT+data_movies)
     # Preparación de los datos

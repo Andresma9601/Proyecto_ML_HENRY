@@ -1,5 +1,5 @@
 # Proyecto Recomendaciones de Peliculas
-##Introducción
+## Introducción
 Este proyecto tiene como objetivo crear un sistema de recomendación de películas basado en una base de datos llamada datos_peliculas.csv (se puede encontrar en la carpeta db_movies). Para lograr esto, se realizaron varias etapas, incluyendo la Extracción, Transformación y Carga de datos (ETL), el Análisis Exploratorio de Datos (EDA), creación de funciones para averiguar algunos datos de las peliculas y por ultimo el sistema de recomendación.
 ## Contenido
 ETL

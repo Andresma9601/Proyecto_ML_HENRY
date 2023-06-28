@@ -59,6 +59,30 @@ Se utiliza **Merge** para combinar los dos DataFrames "originales" ya limpios us
 Para finalizar se crean 5 archivos nuevos (los puedes encontrar en la carpeta **db_movies**), estos se usaran para las funciones.
 
 ## Funciones
+Se importan las bibliotecas necesarias, como:
+- FastAPI
+- pandas
+- TfidfVectorizer
+- KMeans
+- cosine_similarity.
+
+A continuación, se crea una instancia de la aplicación FastAPI utilizando app = FastAPI(). Esto permite crear una API web que escucha y responde a las solicitudes entrantes.
+
+Se define una ruta raíz mediante el decorador @app.get("/"). Esta ruta se accede a través de la URL base "http://127.0.0.1:8000/". Cuando se accede a esta ruta, se devuelve un diccionario con un mensaje de bienvenida.
+
+Se crea la variable DOWNLOAD_ROOT contiene una URL base que se utilizará más adelante en el código.
+
+Se define una nueva ruta en la API llamada "/peliculas_mes/{mes}". Esta ruta espera recibir un parámetro "mes" que representa el nombre de un mes en español.
+
+Se define un diccionario para traducir los meses de ingles a españl, luego se crea la función **cantidad_filmaciones_mes** para calcular la cantidad de filmaciones que se estrenaron en un mes específico.
+
+Dentro de la función, se especifica la ruta relativa del archivo CSV que contiene los datos de las películas por día. Luego, se combina la URL base (DOWNLOAD_ROOT) con la ruta relativa para obtener la URL completa del archivo CSV.
+
+A continuación, se procede a leer el archivo CSV desde la URL completa y almacenar los datos en un DataFrame.
+Se convierte la columna **release_date** del DataFrame a tipo datetime utilizando pandas, luego, el mes ingresado se convierte a minúsculas para que coincida con los datos del DataFrame. Se verifica si el mes ingresado está presente en el diccionario que mapea los meses en español a los meses en inglés.
+Si el mes está presente en el diccionario, se obtiene la traducción al inglés. Se filtran las filas del DataFrame que corresponden al mes consultado, finalmente, se cuenta la cantidad de filmaciones en el mes consultado utilizando len(filmaciones_mes) y se devuelve un mensaje que indica la cantidad de películas estrenadas en ese mes.
+Si el mes ingresado no está en el diccionario, se devuelve un mensaje indicando que no es un mes en español.
+
 
 
 

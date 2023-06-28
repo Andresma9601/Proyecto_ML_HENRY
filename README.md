@@ -52,11 +52,14 @@ La función utiliza expresiones regulares para extraer los atributos deseados de
 
 Para la columna **crew** se crea la funcion **desanidar_crew** que funciona de la misma forma que **desanidar_cast**.
 
-Se unen estos dos DataFrames nuevos y se utiliza **Merge** para combinar los dos DataFrames ya limpiosusando la columna **id**
+Se unen estos dos DataFrames nuevos.
+
+Se utiliza **Merge** para combinar los dos DataFrames "originales" ya limpios usando la columna **id**.
 
 Para finalizar se crean 5 archivos nuevos (los puedes encontrar en la carpeta **db_movies**), estos se usaran para las funciones.
 
 ## Funciones
+
 
 
 

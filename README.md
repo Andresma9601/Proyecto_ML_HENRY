@@ -107,6 +107,25 @@ A continuación, se itera sobre los valores de **vote_count** en el DataFrame fi
 Si el valor de la columna es menor a 2000, se devuelve un mensaje indicando que la película no cumple con la condición de tener al menos 2000 votos.
 Si el título de la película no se encuentra en la lista, se devuelve un mensaje indicando que no es una película de la lista.
 
+Se crea la función **get_actor** que busca información sobre la participación de un actor en películas.
+En primer lugar, se establece la ruta relativa del archivo CSV que contiene los datos de actores, Luego, se combina la URL base con la ruta relativa para obtener la URL completa del archivo CSV. A continuación, se utiliza la función para leer el archivo CSV desde la URL completa y se almacena en un DataFrame
+Se seleccionan las columnas **cast_name y return** del DataFrame, que corresponden al nombre del actor y al retorno de cada película en la que participó.
+Luego, se realiza una búsqueda en la columna **cast_name** para verificar si el nombre del actor ingresado está presente. El resultado de la búsqueda se convierte en un DataFrame llamado peliculas_participante. Se renombra la columna **cast_name** del DataFrame a **bool** para indicar si el actor participó o no en cada película.
+A continuación, se concatena el DataFrame obtenido anteriormente con el DataFrame original para tener toda la información en un solo DataFrame.
+Se itera sobre los valores de la columna **bool** en el DataFrame. Si se encuentra al menos un valor True, se filtran las filas del DataFrame donde el valor de la columna es True, es decir, donde el actor participó en la película. Se calcula el total de películas en las que el actor ha participado, el retorno total obtenido por el actor y el promedio de retorno por película.
+
+La función **get_director** busca información sobre las películas dirigidas por un director específico.
+En primer lugar, se establece la ruta relativa del archivo CSV que contiene los datos de directores y películas, luego, se combina la URL base con la ruta relativa para obtener la URL completa del archivo CSV. A continuación, se utiliza la función para leer el archivo CSV desde la URL completa y se almacena en el DataFrame.
+Se seleccionan las columnas relevantes del DataFrame, que incluyen el trabajo del director, su nombre, la fecha de estreno de la película, el retorno, los ingresos y el presupuesto de la película, y el título de la película.
+Luego, se realiza una búsqueda en la columna **crew_name** para verificar si el nombre del director ingresado está presente. El resultado de la búsqueda se convierte en un DataFrame. Se renombra la columna **crew_name** del DataFrame a **bool** para indicar si el director dirigió o no cada película.
+A continuación, se concatena el DataFrame obtenido anteriormente con el DataFrame original. para tener toda la información en un solo DataFrame.
+Se itera sobre los valores de la columna **bool**. Si se encuentra al menos un valor True, se filtran las filas del DataFrame donde el valor es True, es decir, donde el director ha dirigido la película. Se seleccionan las columnas relevantes en el DataFrame resultante y se crea una lista para almacenar los resultados.
+Luego, se itera sobre las filas del DataFrame. En cada iteración, se obtiene el título de la película, el retorno, los ingresos y el presupuesto. Se agrega un mensaje a la lista con esta información.
+Finalmente, se devuelve la lista, que contiene los mensajes con la información de las películas dirigidas por el director especificado.
+Si no se encuentra ninguna coincidencia, se devuelve un mensaje indicando que el director no ha dirigido ninguna película de la lista.
+
+## Sistema de recomendación
+
 
 
 

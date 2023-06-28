@@ -233,22 +233,21 @@ def get_director(nombre_director):
         return f"Este director no ha dirigido ninguna de las películas de la lista"
 
 
-# Cargar los datos
-data_movies="db_movies/datos_peliculas.csv"
-data = pd.read_csv(DOWNLOAD_ROOT+data_movies)
-# Preparación de los datos
-data = data[['title', 'popularity', 'release_date', 'runtime', 'vote_average']].dropna()
-# Ingeniería de características
-vectorizer = TfidfVectorizer(stop_words='english', lowercase=True)
-X = vectorizer.fit_transform(data['title'] + ' ' + data['release_date'].astype(str) + ' ' + data['runtime'].astype(str) + ' ' + data['vote_average'].astype(str))
-# Construcción del modelo
-k = 10  # Número de clústeres
-model = KMeans(n_clusters=k, random_state=42)
-model.fit(X)
-
 @app.get("/recomendacion/{titulo}")
 # Función para obtener películas similares
 def obtener_peliculas_similares(titulo, n=5):
+    # Cargar los datos
+    data_movies="db_movies/datos_peliculas.csv"
+    data = pd.read_csv(DOWNLOAD_ROOT+data_movies)
+    # Preparación de los datos
+    data = data[['title', 'popularity', 'release_date', 'runtime', 'vote_average']].dropna()
+    # Ingeniería de características
+    vectorizer = TfidfVectorizer(stop_words='english', lowercase=True)
+    X = vectorizer.fit_transform(data['title'] + ' ' + data['release_date'].astype(str) + ' ' + data['runtime'].astype(str) + ' ' + data['vote_average'].astype(str))
+    # Construcción del modelo
+    k = 10  # Número de clústeres
+    model = KMeans(n_clusters=k, random_state=42)
+    model.fit(X)
     # Transformar el título en un vector Tfidf
     titulo_vectorizado = vectorizer.transform([titulo.lower()])
     # Calcular la similitud coseno entre el título y todas las películas del conjunto de datos

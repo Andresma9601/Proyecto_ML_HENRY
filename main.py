@@ -235,7 +235,7 @@ def get_director(nombre_director):
 
 @app.get("/recomendacion/{titulo, n}")
 # Función para obtener películas similares
-def obtener_peliculas_similares(titulo, n=5):
+def obtener_peliculas_similares(titulo, n=0):
     data_movies="db_movies/datos_peliculas.csv"
     data = pd.read_csv(DOWNLOAD_ROOT+data_movies)
     # Preparación de los datos

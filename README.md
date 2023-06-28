@@ -125,12 +125,30 @@ Finalmente, se devuelve la lista, que contiene los mensajes con la información 
 Si no se encuentra ninguna coincidencia, se devuelve un mensaje indicando que el director no ha dirigido ninguna película de la lista.
 
 ## Sistema de recomendación
+Para este pedazo del proyecto intentare explicar de manera mas detallas y mas clara cada paso que se hizo para realizar este modelo:
 
+1. Se define la ruta relativa del archivo CSV que contiene los datos de las películas en la variable data_movies. Esta ruta es la ubicación del archivo dentro del sistema de archivos.
 
+2. Se utiliza la función read_csv de la biblioteca Pandas para cargar el archivo CSV en el DataFrame data.
 
+3. En esta parte, se realiza una preparación de los datos en el DataFrame data. Se seleccionan las columnas relevantes para el análisis, que incluyen el título de la película, su popularidad, fecha de lanzamiento, duración y calificación promedio de votos. Además, se eliminan las filas que contienen valores faltantes (NaN) utilizando el método dropna(). Esto asegura que solo se utilicen películas con datos completos.
 
+4. Se crea una instancia del vectorizador TF-IDF (TfidfVectorizer). TF-IDF es una técnica de procesamiento de lenguaje natural que asigna un valor a cada palabra en función de su frecuencia en un documento y en el corpus general. En este caso, se utiliza para convertir el texto del título de las películas en una representación numérica.
 
+5. El vectorizador se aplica a los textos de las películas en el DataFrame data. Se concatenan las columnas relevantes que contienen información sobre el título, fecha de lanzamiento, duración y calificación promedio de votos. Esto se hace para capturar diferentes aspectos de las películas en la representación numérica. La función fit_transform del vectorizador transforma los datos de texto en una matriz numérica densa llamada X, que contiene las características numéricas de cada película.
 
+6. Se define el número de clústeres k como 10. Un clúster es un grupo de elementos similares. Aquí se utiliza el algoritmo de agrupación k-means para agrupar las películas en función de sus características. Se crea una instancia del modelo KMeans con el número de clústeres especificado y un valor de random_state para reproducibilidad.
 
+7. El modelo k-means se ajusta a los datos utilizando el método fit(). Esto significa que el algoritmo encuentra los clústeres que mejor representan las películas en función de sus características. Los clústeres se determinan de manera iterativa, minimizando la distancia entre las películas dentro de cada clúster y maximizando la distancia entre los clústeres.
 
+8. El título de la película de consulta se vectoriza utilizando el mismo vectorizador TF-IDF. Esto se hace para obtener su representación numérica correspondiente. El título se convierte a minúsculas antes de la vectorización.
 
+9. Se calcula la similitud coseno entre el título de la película de consulta vectorizado y todos los títulos de películas en el conjunto de datos. La similitud coseno es una medida que indica qué tan similares son dos vectores. Aquí se utiliza para medir la similitud entre el título de la película de consulta y los títulos de todas las películas en el conjunto de datos. Esto se hace utilizando la función cosine_similarity().
+
+10. Se obtiene el índice de la película de consulta en el DataFrame data utilizando la función index. Esto nos dará la ubicación de la película en el DataFrame.
+
+11. Las similitudes calculadas se ordenan en orden descendente utilizando el método argsort(). Esto nos dará los índices de las películas en el orden de su similitud con la película de consulta.
+
+12. Se itera sobre los índices de las películas similares y se agregan los títulos al resultado final en la lista peliculas_similares. Si el índice corresponde a la película de consulta, se omite. Se limita la lista a las primeras 5 películas similares encontradas.
+
+13. Finalmente, se devuelve la lista de títulos de películas similares como resultado.

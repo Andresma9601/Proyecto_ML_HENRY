@@ -97,7 +97,16 @@ A continuación, se itera sobre los títulos de las películas en la columna **t
 Se obtienen datos específicos de la película encontrada, como el título, el año de estreno y el score/popularidad, utilizando la función **iloc** para acceder a las filas y columnas correspondientes en el DataFrame filtrado.
 Por último, se retorna un mensaje que contiene los datos de la película encontrada, incluyendo el título, el año de estreno y el score/popularidad.
 Si no se encuentra ninguna película con el título ingresado en la lista, se retorna un mensaje indicando que no se encontró la película.
-![image](https://github.com/Andresma9601/Proyecto_ML_HENRY/assets/112583134/5be16864-0344-4957-9de1-0e2b02d19bfd)
+
+Se crea la función **votos_titulo** busca la información de votos de una película específica.
+En primer lugar, se establece la ruta relativa del archivo CSV que contiene los datos de votos de las películasen una variable. Luego, se combina la URL base con la ruta relativa para obtener la URL completa del archivo CSV. A continuación, se lee el archivo CSV desde la URL completa y se almacena en el DataFrame.
+El título de la película ingresado se convierte a minúsculas para asegurar una comparación adecuada con los datos del DataFrame.
+A continuación, se itera sobre los títulos de las películas en la columna "title" del DataFrame. Para cada título de película, se convierte a minúsculas y se verifica si coincide con el título ingresado. Si hay una coincidencia, se procede a filtrar el DataFrame para obtener los datos de la película encontrada.
+Se crea un DataFrame diferente con las columnas **title, vote_count, vote_average y release_year**. Luego, se filtra el DataFrame para obtener las filas con el título de la película actual.
+A continuación, se itera sobre los valores de **vote_count** en el DataFrame filtrado. Si el valor  es mayor o igual a 2000, se obtienen los valores de la primera fila del DataFrame filtrado, que corresponden al título de la película, el total de votos, el promedio de votos y el año de estreno. Luego, se devuelve un mensaje que contiene esta información.
+Si el valor de la columna es menor a 2000, se devuelve un mensaje indicando que la película no cumple con la condición de tener al menos 2000 votos.
+Si el título de la película no se encuentra en la lista, se devuelve un mensaje indicando que no es una película de la lista.
+
 
 
 

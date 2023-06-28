@@ -75,13 +75,29 @@ Se crea la variable **DOWNLOAD_ROOT** contiene una URL base que se utilizará m�
 Se define una nueva ruta en la API llamada "/peliculas_mes/{mes}". Esta ruta espera recibir un parámetro "mes" que representa el nombre de un mes en español.
 
 Se define un diccionario para traducir los meses de ingles a españl, luego se crea la función **cantidad_filmaciones_mes** para calcular la cantidad de filmaciones que se estrenaron en un mes específico.
-
 Dentro de la función, se especifica la ruta relativa del archivo CSV que contiene los datos de las películas por día. Luego, se combina la URL base (**DOWNLOAD_ROOT**) con la ruta relativa para obtener la URL completa del archivo CSV.
-
 A continuación, se procede a leer el archivo CSV desde la URL completa y almacenar los datos en un DataFrame.
 Se convierte la columna **release_date** del DataFrame a tipo datetime utilizando pandas, luego, el mes ingresado se convierte a minúsculas para que coincida con los datos del DataFrame. Se verifica si el mes ingresado está presente en el diccionario que mapea los meses en español a los meses en inglés.
 Si el mes está presente en el diccionario, se obtiene la traducción al inglés. Se filtran las filas del DataFrame que corresponden al mes consultado, finalmente, se cuenta la cantidad de filmaciones en el mes consultado utilizando len(filmaciones_mes) y se devuelve un mensaje que indica la cantidad de películas estrenadas en ese mes.
 Si el mes ingresado no está en el diccionario, se devuelve un mensaje indicando que no es un mes en español.
+
+Se crea la función **cantidad_filmaciones_dia** que recibe como parámetro dia, que representa el día de la semana en español del cual se desea conocer la cantidad de filmaciones.
+El primer paso es definir un diccionario llamado dias_dict que mapea los nombres de los días de la semana en español a sus equivalentes en inglés. Esto se realiza para poder realizar una comparación adecuada con los datos del DataFrame.
+Luego, se lee un archivo CSV que contiene datos de filmaciones, utilizando la ruta relativa del archivo y la URL base para obtener la URL completa del archivo CSV. El archivo se lee y se almacena en el DataFrame.
+Después, se convierte la columna **release_date** del DataFrame de tipo string a tipo datetime.
+A continuación, se convierte el parámetro dia a minúsculas para asegurarnos de que coincida con los datos del DataFrame.
+Se verifica si el día ingresado está presente en el diccionario **dias_dict**. Si está presente, se obtiene su equivalente en inglés. Si el día ingresado no está en el diccionario, se retorna un mensaje indicando que no es un día en español válido.
+Si el día ingresado está en el diccionario, se filtran las películas que fueron estrenadas en el día consultado. Esto se realiza utilizando una comparación entre el nombre del día de la columna **release_date** y el día en inglés obtenido del diccionario. El resultado se almacena en una variable.
+Finalmente, se obtiene la cantidad de filmaciones en el día consultado utilizando la función y se retorna un mensaje indicando la cantidad de películas estrenadas en ese día.
+
+Se crea la función **score_titulo**  que busca la puntuación y la información relacionada de una película específica.
+En primer lugar, se establece la ruta relativa del archivo CSV que contiene los datos de puntuación de las películas en una variable. Luego, se combina la URL base con la ruta relativa para obtener la URL completa del archivo CSV. A continuación, se lee el archivo CSV desde la URL completa y se almacena en un DataFrame.
+El título de la película ingresado se convierte a minúsculas para asegurar una comparación adecuada con los datos del DataFrame.
+A continuación, se itera sobre los títulos de las películas en la columna **title** del DataFrame. Para cada título de película, se convierte a minúsculas y se verifica si coincide con el título ingresado. Si hay una coincidencia, se procede a filtrar el DataFrame para obtener los datos de la película encontrada.
+Se obtienen datos específicos de la película encontrada, como el título, el año de estreno y el score/popularidad, utilizando la función **iloc** para acceder a las filas y columnas correspondientes en el DataFrame filtrado.
+Por último, se retorna un mensaje que contiene los datos de la película encontrada, incluyendo el título, el año de estreno y el score/popularidad.
+Si no se encuentra ninguna película con el título ingresado en la lista, se retorna un mensaje indicando que no se encontró la película.
+![image](https://github.com/Andresma9601/Proyecto_ML_HENRY/assets/112583134/5be16864-0344-4957-9de1-0e2b02d19bfd)
 
 
 

@@ -5,6 +5,7 @@ Este proyecto tiene como objetivo crear un sistema de recomendación de películ
 - ETL y EDA
 - Funciones
 - Sistema de Recomendación
+- Dirección a la API
 ## ETL y EDA
 En este proyecto, utilizamos las siguientes bibliotecas para realizar la extracción, transformación y carga de datos (ETL):
 
@@ -152,3 +153,6 @@ Para este pedazo del proyecto intentare explicar de manera mas detallas y mas cl
 12. Se itera sobre los índices de las películas similares y se agregan los títulos al resultado final en la lista peliculas_similares. Si el índice corresponde a la película de consulta, se omite. Se limita la lista a las primeras 5 películas similares encontradas.
 
 13. Finalmente, se devuelve la lista de títulos de películas similares como resultado.
+
+## Dirección de la API
+Aca puedes entrar a hacer tus consultas https://peliculas-2c5w.onrender.com/docs

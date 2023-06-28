@@ -39,7 +39,24 @@ Se eliminan las columnas **video, imdb_id, adult, original_title, poster_path, h
 
 Se utiliza el atributo dt.year de la columna "**release_date** para obtener el año de lanzamiento de cada película y se asigna a la nueva columna **release_year**, esta nueva columna es útil para realizar análisis o filtrar los datos por año de lanzamiento de las películas.
 
-Para empezar con credits, nos damos cuenta que toca trabajar con cast y crew
+Para empezar con credits, nos damos cuenta que toca desanidar los datos de las columnas **cast y crew**.
+
+Se crea la función **desanidar_cast**, es utilizada para desanidar los datos de la columna **cast** en el DataFrame. Esta columna contiene información sobre el elenco de actores de cada película, pero los datos están anidados.
+La función utiliza expresiones regulares para extraer los atributos deseados de los datos de la columna. Estos atributos incluyen **cast_id, character, credit_id, gender, id', name, order y profile_path**, esta funciona de la siguiente manera:
+1. La función recibe como argumento la columna **cast** y realiza las siguientes operaciones.
+2. Utiliza expresiones regulares para extraer los valores de cada atributo de la cadena de texto de la columna.
+3. Crea un DataFrame para cada atributo extraído.
+4. Se renombran las columnas en el DataFrame.
+5. Concatena los DataFrames de cada atributo en un único DataFrame resultante.
+6. Devuelve el DataFrame resultante que contiene los atributos desanidados del elenco.
+
+Para la columna **crew** se crea la funcion **desanidar_crew** que funciona de la misma forma que **desanidar_cast**.
+
+Se unen estos dos DataFrames nuevos y se utiliza **Merge** para combinar los dos DataFrames ya limpiosusando la columna **id**
+
+Para finalizar se crean 5 archivos nuevos (los puedes encontrar en la carpeta **db_movies**), estos se usaran para las funciones.
+
+## Funciones
 
 
 

@@ -233,9 +233,9 @@ def get_director(nombre_director):
         return f"Este director no ha dirigido ninguna de las películas de la lista"
 
 
-@app.get("/recomendacion/{titulo, n}")
+@app.get("/recomendacion/{titulo}")
 # Función para obtener películas similares
-def obtener_peliculas_similares(titulo, n=0):
+def obtener_peliculas_similares(titulo):
     data_movies="db_movies/datos_peliculas.csv"
     data = pd.read_csv(DOWNLOAD_ROOT+data_movies)
     # Preparación de los datos
@@ -255,11 +255,11 @@ def obtener_peliculas_similares(titulo, n=0):
     indice_pelicula_consulta = data[data['title'].str.lower() == titulo.lower()].index[0]
     # Ordenar las similitudes de forma descendente
     indices_peliculas_similares = similitudes.argsort()[0][::-1]
-    # Encontrar las n películas más similares que no sean la película de consulta
+    # Encontrar las 5 películas más similares que no sean la película de consulta
     peliculas_similares = []
     for indice in indices_peliculas_similares:
         if indice != indice_pelicula_consulta:
             peliculas_similares.append(data.iloc[indice]['title'])
-            if len(peliculas_similares) == n:
+            if len(peliculas_similares) == 5:
                 break
     return peliculas_similares

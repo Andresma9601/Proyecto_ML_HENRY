@@ -1,6 +1,8 @@
 # Proyecto Recomendaciones de Peliculas
 ## Introducción
-Este proyecto tiene como objetivo crear un sistema de recomendación de películas basado en datos suministrados por 2 bases de datos iniciales que son movies_dataset.csv (se pueden encontrar en la carpeta db_movies dividido en 2 partes, movies_dataset1.csv y movies_dataset2.csv ) y credits.parquet (se pueden encontrar en la carpeta db_movies dividido en 3 partes, como credits1.parquet, credits2.parquet y credits3.parquet). Para lograr esto, se realizaron varias etapas, incluyendo la Extracción, Transformación y Carga de datos (ETL), el Análisis Exploratorio de Datos (EDA), creación de funciones para averiguar algunos datos de las peliculas y por ultimo el sistema de recomendación.
+Este proyecto tiene como objetivo crear un sistema de recomendación de películas basado en datos suministrados por 2 bases de datos iniciales que son movies_dataset.csv (se pueden encontrar en la carpeta db_movies dividido en 2 partes, movies_dataset1.csv y movies_dataset2.csv ) y credits.parquet (se pueden encontrar en la carpeta db_movies dividido en 3 partes, como credits1.parquet, credits2.parquet y credits3.parquet), para cada uno de los DataBase se concatenan sus partes con axis=0 osea uno debajo del otro, se reinicia el index y los tenemos listos para trabajas. 
+
+Para lograr el proyecto, se realizaron varias etapas, incluyendo la Extracción, Transformación y Carga de datos (ETL), el Análisis Exploratorio de Datos (EDA), creación de funciones para averiguar algunos datos de las peliculas y por ultimo el sistema de recomendación.
 ## Contenido
 - ETL y EDA
 - Funciones

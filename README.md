@@ -61,6 +61,31 @@ Se utiliza **Merge** para combinar los dos DataFrames "originales" ya limpios us
 
 Para finalizar se crean 5 archivos nuevos (los puedes encontrar en la carpeta **db_movies**), estos se usaran para las funciones.
 
+Ahora para el EDA se visualizo toda la información de las 42 columnas que quedaron y se escogieron las siguientes:
+1.	**Budget**: Presupuesto de la película (valor numérico).
+2.	**original_language**: Idioma original de la película (valor categórico).
+3.	**popularity**: Popularidad de la película (valor numérico).
+4.	**release_date**: Fecha de lanzamiento de la película (valor categórico).
+5.	**revenue**: Ganancias de la película (valor numérico).
+6.	**runtime**: Duración de la película en minutos (valor numérico).
+7.	**title**: Título de la película (texto).
+8.	**vote_average**: Promedio de votos de la película (valor numérico).
+9.	**vote_count**: Cantidad de votos de la película (valor numérico).
+10.	**genres_name**: Géneros de la película (valor categórico).
+11.	**name_production_company**: Nombre de la compañía de producción (valor categórico).
+12.	**name_country**: Nombre del país de origen de la película (valor categórico).
+13.	**language**: Idioma de la película (valor categórico).
+14.	**return**: Valor de retorno de la película (valor numérico).
+15.	**release_year**: Año de lanzamiento de la película (valor numérico).
+16.	**cast_name**: Nombre del elenco de la película (valor categórico).
+17.	**job**: Trabajo realizado por el equipo de producción (valor categórico).
+
+A partir de estas columnas se creo un nuevo DataFrame con el cual se dividieron en variables numericas y categoricas, luego de un corto analisis exploratorio de datos se logro evidenciar que las mejores columnas para trabajar en el modelo de recomendacion fueron:
+1.	**title**: El título de una película o contenido puede ser una característica importante para los usuarios, ya que es uno de los elementos más visibles y reconocibles. Los usuarios suelen tener preferencias específicas en términos de género, actores o temas específicos que pueden estar relacionados con el título.
+2.	**genres_name**: Los géneros cinematográficos son una forma común de categorizar y agrupar películas o contenido similar. Los usuarios a menudo tienen preferencias claras en términos de géneros que les gustan o no les gustan. Incluir esta variable puede ayudar al modelo a comprender las preferencias de los usuarios y ofrecer recomendaciones más relevantes basadas en los géneros preferidos.
+3.	**vote_average**: La calificación promedio de una película o contenido puede ser un indicador de su calidad percibida. Los usuarios a menudo confían en las calificaciones y críticas para seleccionar contenido. Incluir esta variable puede ayudar al modelo a tener en cuenta la calidad percibida y ofrecer recomendaciones que se alineen con las preferencias de calidad de los usuarios.
+4.	**vote_count**: El número de votos recibidos por una película o contenido puede ser un indicador de su popularidad o relevancia. Las películas populares o con un alto número de votos suelen ser más conocidas y pueden tener un mayor atractivo para los usuarios. Incluir esta variable puede ayudar al modelo a tener en cuenta la popularidad y ofrecer recomendaciones que reflejen las preferencias de contenido popular.
+
 ## Funciones
 Se importan las bibliotecas necesarias, como:
 - FastAPI

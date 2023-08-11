@@ -15,182 +15,155 @@ def index():
 # Definición de la variable DOWNLOAD_ROOT que contiene la URL base
 DOWNLOAD_ROOT = "https://raw.githubusercontent.com/Andresma9601/Proyecto_ML_HENRY/main/"
        
-# Diccionario de meses en español e inglés
-meses_dict = {
-    "enero": "January",
-    "febrero": "February",
-    "marzo": "March",
-    "abril": "April",
-    "mayo": "May",
-    "junio": "June",
-    "julio": "July",
-    "agosto": "August",
-    "septiembre": "September",
-    "octubre": "October",
-    "noviembre": "November",
-    "diciembre": "December"
-}
-@app.get("/peliculas_mes/{mes}")
-# Función para calcular la cantidad de filmaciones en un mes determinado
-def cantidad_filmaciones_mes(mes:str):
+@app.get("/peliculas_idioma/{idioma}")
+# Función para calcular la cantidad de filmaciones en un idioma determinado
+def peliculas_idioma(idioma: str):
     # Ruta relativa del archivo CSV
-    df_dia="db_movies/Dias.csv"
+    df_idioma="db_movies/.csv"
     # Combinar la URL base y la ruta relativa para obtener la URL completa del archivo CSV
-    csv_path=DOWNLOAD_ROOT + df_dia
+    csv_path=DOWNLOAD_ROOT + df_idioma
     # Leer el archivo CSV desde la URL completa utilizando la función read_csv de Pandas
-    df_dia=pd.read_csv(csv_path)
-    # Convertir de str a datetime
-    df_dia["release_date"]=df_dia['release_date'] = pd.to_datetime(df_dia["release_date"])
-    # Convierte el mes a minúsculas para que coincida con los datos del DataFrame
-    mes = mes.lower()
-    # Verifica si el mes ingresado está en el diccionario
-    if mes in meses_dict:
-        mes_ingles = meses_dict[mes]
-        # Filtra las películas que fueron estrenadas en el mes consultado
-        filmaciones_mes = df_dia["release_date"][df_dia["release_date"].dt.month_name().str.lower() == mes_ingles.lower()]
-        # Obtiene la cantidad de filmaciones en el mes
-        cantidad = len(filmaciones_mes)
-        return f"{cantidad} películas fueron estrenadas en el mes de {mes.capitalize()}"
-    else:
-        return f"no es un mes en español"
-
-# Diccionario de dias en español e inglés
-dias_dict = {
-    "lunes": "Monday",
-    "martes": "Tuesday",
-    "miercoles": "Wednesday",
-    "jueves": "Thursday",
-    "viernes": "Friday",
-    "sabado": "Saturday",
-    "domingo": "Sunday"
-}
-@app.get("/peliculas_dia/{dia}")
-# Función para calcular la cantidad de filmaciones en un dia determinado
-def cantidad_filmaciones_dia(dia:str):
-    # Ruta relativa del archivo CSV
-    df_dia="db_movies/Dias.csv"
-    # Combinar la URL base y la ruta relativa para obtener la URL completa del archivo CSV
-    csv_path=DOWNLOAD_ROOT + df_dia
-    # Leer el archivo CSV desde la URL completa utilizando la función read_csv de Pandas
-    df_dia=pd.read_csv(csv_path)
-    # Convertir de str a datetime
-    df_dia["release_date"]=df_dia['release_date'] = pd.to_datetime(df_dia["release_date"])
-    # Convierte el dia a minúsculas para que coincida con los datos del DataFrame
-    dia = dia.lower()
-    # Verifica si el dia ingresado está en el diccionario
-    if dia in dias_dict:
-        dia_ingles = dias_dict[dia]
-        # Filtra las películas que fueron estrenadas en el dia consultado
-        filmaciones_dia = df_dia["release_date"][df_dia["release_date"].dt.day_name().str.lower() == dia_ingles.lower()]
-        # Obtiene la cantidad de filmaciones en el dia
-        cantidad = len(filmaciones_dia)
-        return f"{cantidad} de películas fueron estrenadas en los días {dia.capitalize()}"
-    else:
-        return f"no es un dia en español"
-    
-@app.get("/peliculas_score/{titulo_de_la_filmacion}")
-def score_titulo(titulo_de_la_filmacion: str):  
-    # Ruta relativa del archivo CSV
-    df_score = "db_movies/Score.csv"
-    # Combinar la URL base y la ruta relativa para obtener la URL completa del archivo CSV
-    csv_path = DOWNLOAD_ROOT + df_score
-    # Leer el archivo CSV desde la URL completa utilizando la función read_csv de Pandas
-    df_score = pd.read_csv(csv_path)
-    # Convierte el título de la película a minúsculas
-    titulo_minuscula = titulo_de_la_filmacion.lower()
-    # Itera sobre los títulos de las películas en el DataFrame movies_unique
-    for movie in df_score["title"]:
-        # Convierte el título de la película actual a minúsculas
-        movie_minuscula = movie.lower()
-        # Verifica si hay una coincidencia entre los títulos
-        if movie_minuscula == titulo_minuscula:
-            # Filtra el DataFrame movies_unique para obtener los datos de la película encontrada
-            df = df_score
-            df = df.loc[df["title"] == movie]
-            # Obtiene los datos específicos de la película encontrada
-            dato1 = df.iloc[0, 1]
-            dato2 = df.iloc[0, 2]
-            dato3 = df.iloc[0, 3]
-            # Retorna un mensaje con los datos de la película encontrada
-            return f"La película {dato1} fue estrenada en el año {dato2} con un score/popularidad de {dato3}"
-    # Retorna un mensaje indicando que no se encontró la película en la lista
-    return "No es una película de esta lista"
-
-@app.get("/peliculas_votos/{titulo_de_la_filmacion}")
-def votos_titulo(titulo_de_la_filmacion: str):
-    # Ruta relativa del archivo CSV
-    df_votos="db_movies/Votos.csv"
-    # Combinar la URL base y la ruta relativa para obtener la URL completa del archivo CSV
-    csv_path=DOWNLOAD_ROOT + df_votos
-    # Leer el archivo CSV desde la URL completa utilizando la función read_csv de Pandas
-    df_votos=pd.read_csv(csv_path)
-    # Convierte el título de la filmación a minúsculas
-    titulo_minuscula = titulo_de_la_filmacion.lower()
-    # Itera sobre los títulos de películas únicos en la variable "movies_unique"
-    for movie in df_votos["title"]:
-        # Convierte el título de la película actual a minúsculas
-        movie_minuscula = movie.lower()
-        # Verifica si el título de la película actual coincide con el título proporcionado
-        if movie_minuscula == titulo_minuscula:
-            # Crea un DataFrame con las columnas "title", "vote_count", "vote_average" y "release_year"
-            df = df_votos
-            # Filtra el DataFrame para obtener las filas con el título de la película actual
-            df = df.loc[df["title"] == movie]
-            # Itera sobre los valores de "vote_count" en el DataFrame filtrado
-            for i in df["vote_count"]:
-                # Verifica si el valor de "vote_count" es mayor o igual a 2000
-                if i >= 2000:
-                    # Obtiene los valores de la primera fila del DataFrame filtrado
-                    dato1 = df.iloc[0, 1]
-                    dato2 = df.iloc[0, 2]
-                    dato3 = df.iloc[0, 3]
-                    dato4 = df.iloc[0, 4]
-                    # Devuelve una cadena de texto con información sobre la película y sus valoraciones
-                    return f"La película {dato1} fue estrenada en el año {dato4}. La misma cuenta con un total de {dato2} valoraciones, con un promedio de {dato3}"
-                else:
-                    # Devuelve una cadena de texto indicando que la película no cuenta con más de 2000 votos
-                    return f"Esta película no cumple con las condicion de tener al menos 2000 votos, por lo cual no se devuelve ningun valor"
-    # Si el título de la película no se encuentra en la lista
-    else:
-        # Devuelve una cadena de texto indicando que no es una película de la lista
-        return f"No es una película de esta lista"
-
-@app.get("/peliculas_actor/{nombre_actor}")
-def get_actor(nombre_actor:str):
-    # Ruta relativa del archivo CSV
-    df_actor="db_movies/Actor.csv"
-    # Combinar la URL base y la ruta relativa para obtener la URL completa del archivo CSV
-    csv_path=DOWNLOAD_ROOT + df_actor
-    # Leer el archivo CSV desde la URL completa utilizando la función read_csv de Pandas
-    df_actor=pd.read_csv(csv_path)
-    # Seleccionar las columnas "cast_name" y "return" del DataFrame movies_unique
-    df = df_actor[["cast_name", "return"]]
-    # Buscar si el nombre del actor está presente en la columna "cast_name"
-    peliculas_participante = df["cast_name"].str.contains(nombre_actor, case=False)
+    df_idioma=pd.read_csv(csv_path)
+    # Seleccionar la columna "language" del DataFrame df_idioma
+    df = df_idioma[["language"]]
+    # Buscar si el idioma está presente en la columna "language"
+    peliculas = df["language"].str.contains(idioma, case=False)
     # Convertir el resultado de la búsqueda en un DataFrame
-    peliculas_participante = pd.DataFrame(peliculas_participante)
-    # Renombrar la columna "cast_name" del DataFrame peliculas_participante a "bool"
-    peliculas_participante = peliculas_participante.rename(columns={'cast_name': 'bool'})
-    # Concatenar el DataFrame peliculas_participante con el DataFrame original df
-    df2 = pd.concat([peliculas_participante, df], axis=1)
+    peliculas = pd.DataFrame(peliculas)
+    # Renombrar la columna "language" del DataFrame peliculas a "bool"
+    peliculas = peliculas.rename(columns={'language': 'bool'})
+    # Concatenar el DataFrame peliculas con el DataFrame original df
+    df2 = pd.concat([peliculas, df], axis=1)
     # Iterar sobre los valores de la columna "bool" en el DataFrame df2
     for i in df2["bool"]:
         # Verificar si el valor es True
         if i == True:
             # Filtrar las filas del DataFrame df2 donde el valor de "bool" es True
-            peliculas_participante = df2.loc[df2["bool"] == True]
-            # Calcular el total de películas en las que el actor ha participado
-            total_peliculas = sum(peliculas_participante["bool"])
-            # Calcular el retorno total del actor
-            retorno = sum(peliculas_participante["return"])
-            # Calcular el promedio de retorno por película
-            promedio = retorno / total_peliculas
-            # Devolver un mensaje con la información obtenida
-            return f"El actor {nombre_actor.title()} ha participado de {total_peliculas} cantidad de filmaciones, el mismo ha conseguido un retorno de {retorno} con un promedio de {promedio} por filmación"
-    # Si no se encuentra el nombre del actor en ninguna película
+            peliculas = df2.loc[df2["bool"] == True]
+            # Calcular el total de películas en las que el idioma está presente
+            total_peliculas = sum(peliculas["bool"])
+            return f"{total_peliculas} peliculas estan en idioma {idioma}"
+        else:
+            # Devolver un mensaje indicando que no hay películas en ese idioma
+            return f"No hay peliculas en este idioma"
+
+# Diccionario de dias en español e inglés
+@app.get("/peliculas_duracion/{pelicula}")
+# Función para calcular la duracion de las peliculas.
+def peliculas_duracion(pelicula: str):
+    # Cargar el archivo CSV en un DataFrame
+    df_duracion="db_movies/Score.csv"
+    csv_path = DOWNLOAD_ROOT + df_duracion
+    df_duracion = pd.read_csv(csv_path)
+    # Seleccionar las columnas "title", "release_year" y "runtime" del DataFrame df_duracion
+    df = df_duracion[["title", "release_year", "runtime"]]
+    # Inicialización de dato1 y dato2
+    dato1 = None
+    dato2 = None
+    # Convertir el título ingresado a minúsculas
+    pelicula_lower = pelicula.lower()
+    # Verificar si el título ingresado en minúsculas está en la columna "title" en minúsculas
+    if pelicula_lower in df_duracion["title"].str.lower().values:
+        # Filtrar el DataFrame para la película específica
+        df_duracion = df_duracion.loc[df_duracion["title"].str.lower() == pelicula_lower]
+        # Obtener los valores de la fila filtrada
+        dato1 = df_duracion.iloc[0, 1]
+        dato2 = df_duracion.iloc[0, 2]
+    # Construir el mensaje de salida
+    if dato1 is not None and dato2 is not None:
+        return f"La película {pelicula.title()} dura {dato2} y fue estrenada en el año {dato1}."
     else:
-        # Devolver un mensaje indicando que el actor no participa en ninguna película
-        return f"El actor no participa en ninguna pelicula"
+        return f"No se encontró información para la película {pelicula.title()}."
+    
+@app.get("/franquicia/{franquicia}")
+def franquicia(franquicia: str):
+    # Cargar el archivo CSV en un DataFrame
+    df_franquicia = "db_movies/franquicia.csv"
+    csv_path = DOWNLOAD_ROOT + df_franquicia
+    df_franquicia= pd.read_csv(csv_path)
+    # Seleccionar las columnas "name_production_company" y "revenue" del DataFrame df1
+    df = df_franquicia[["name_production_company", "revenue"]]
+    # Convertir el nombre de la franquicia ingresado a minúsculas
+    franquicia_lower = franquicia.lower()
+    # Verificar si el nombre de la franquicia en minúsculas está presente en la columna "name_production_company" en minúsculas
+    franquicias = df["name_production_company"].str.lower().str.contains(franquicia_lower, case=False)
+    franquicias = pd.DataFrame(franquicias)
+    # Renombrar la columna "name_production_company" del DataFrame franquicias a "bool"
+    franquicias = franquicias.rename(columns={'name_production_company': 'bool'})
+    # Concatenar el DataFrame franquicias con el DataFrame original df
+    df2 = pd.concat([franquicias, df], axis=1)
+    for i in df2["bool"]:
+        # Verificar si el valor es True
+        if i == True:
+            # Filtrar las filas del DataFrame df2 donde el valor de "bool" es True
+            franquicias = df2.loc[df2["bool"] == True]
+            # Calcular la ganancia total de la franquicia
+            revenue = sum(franquicias["revenue"])
+            # Calcular el promedio de ganancia
+            promedio = revenue / franquicias["revenue"].count()
+            # Devolver el mensaje con la información obtenida
+            return f"La franquicia {franquicia.title()} tiene una ganancia total de {revenue} y una ganancia promedio de {promedio:.2f}"
+    # Si no se encuentra la franquicia, devolver un mensaje indicando la ausencia de datos
+    return f"No hay datos para esta franquicia"
+
+@app.get("/peliculas_pais/{pais}")
+def peliculas_pais(pais: str):
+    # Cargar el archivo CSV en un DataFrame
+    df_pais = "db_movies/pelispais.csv"
+    csv_path = DOWNLOAD_ROOT + df_pais
+    df_pais= pd.read_csv(csv_path)
+    # Seleccionar las columnas "name_country" del DataFrame df1
+    df = df_pais[["name_country"]]
+    # Verificar si el nombre del país ingresado está presente en la columna "name_country"
+    paises = df["name_country"].str.contains(pais, case=False)
+    # Crear un DataFrame con los resultados de la verificación
+    paises = pd.DataFrame(paises)
+    # Renombrar la columna "name_country" del DataFrame paises a "bool"
+    paises = paises.rename(columns={'name_country': 'bool'})
+    # Concatenar el DataFrame paises con el DataFrame original df
+    df2 = pd.concat([paises, df], axis=1)
+    for i in df2["bool"]:
+        # Verificar si el valor es True
+        if i == True:
+            # Filtrar las filas del DataFrame df2 donde el valor de "bool" es True
+            paises = df2.loc[df2["bool"] == True]
+            # Contar el total de películas firmadas en el país
+            total = paises["bool"].count()
+            # Devolver el mensaje con la información obtenida
+            return f"En el {pais.title()} se firmaron un total de {total} películas"
+    # Si no se encuentra el país, devolver un mensaje indicando la ausencia de datos
+    return f"No hay datos para este país"
+
+
+@app.get("/productoras_exitosas/{productora}")
+def productoras_exitosas(productora: str):
+    # Cargar el archivo CSV en un DataFrame
+    df_productoras = "db_movies/productora.csv"
+    csv_path = DOWNLOAD_ROOT + df_productoras
+    df_productoras= pd.read_csv(csv_path)
+    # Seleccionar las columnas "name_production_company" y "revenue" del DataFrame df1
+    df = df_productoras[["name_production_company", "revenue"]]
+    # Verificar si el nombre de la productora ingresado está presente en la columna "name_production_company"
+    productoras = df["name_production_company"].str.contains(productora, case=False)
+    # Crear un DataFrame con los resultados de la verificación
+    productoras = pd.DataFrame(productoras)
+    # Renombrar la columna "name_production_company" del DataFrame productoras a "bool"
+    productoras = productoras.rename(columns={'name_production_company': 'bool'})
+    # Concatenar el DataFrame productoras con el DataFrame original df
+    df2 = pd.concat([productoras, df], axis=1)
+    for i in df2["bool"]:
+        # Verificar si el valor es True
+        if i == True:
+            # Filtrar las filas del DataFrame df2 donde el valor de "bool" es True
+            productoras = df2.loc[df2["bool"] == True]
+            # Calcular la ganancia total de la productora
+            revenue = sum(productoras["revenue"])
+            # Calcular el total de películas producidas por la productora
+            total = productoras["revenue"].count()
+            # Devolver el mensaje con la información obtenida
+            return f"La productora {productora.title()} tiene una ganancia total de {revenue} y un total de películas de {total}"
+    # Si no se encuentra la productora, devolver un mensaje indicando la ausencia de datos
+    return f"No hay datos para esta productora"
 
 @app.get("/peliculas_director/{nombre_director}")
 def get_director(nombre_director):

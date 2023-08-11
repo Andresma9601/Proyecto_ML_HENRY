@@ -67,11 +67,11 @@ def peliculas_duracion(pelicula: str):
         # Filtrar el DataFrame para la película específica
         df_duracion = df_duracion.loc[df_duracion["title"].str.lower() == pelicula_lower]
         # Obtener los valores de la fila filtrada
-        dato1 = df_duracion.iloc[0, 1]
+        dato1 = df_duracion.iloc[0, 3]
         dato2 = df_duracion.iloc[0, 2]
     # Construir el mensaje de salida
     if dato1 is not None and dato2 is not None:
-        return f"La película {pelicula.title()} dura {dato2} y fue estrenada en el año {dato1}."
+        return f"La película {pelicula.title()} dura {dato1} y fue estrenada en el año {dato2}."
     else:
         return f"No se encontró información para la película {pelicula.title()}."
     

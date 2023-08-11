@@ -81,15 +81,15 @@ def franquicia(franquicia: str):
     df_franquicia = "db_movies/franquicia.csv"
     csv_path = DOWNLOAD_ROOT + df_franquicia
     df_franquicia= pd.read_csv(csv_path)
-    # Seleccionar las columnas "name_production_company" y "revenue" del DataFrame df1
-    df = df_franquicia[["name_production_company", "revenue"]]
+    # Seleccionar las columnas "name" y "revenue" del DataFrame df1
+    df = df_franquicia[["name", "revenue"]]
     # Convertir el nombre de la franquicia ingresado a minúsculas
     franquicia_lower = franquicia.lower()
-    # Verificar si el nombre de la franquicia en minúsculas está presente en la columna "name_production_company" en minúsculas
-    franquicias = df["name_production_company"].str.lower().str.contains(franquicia_lower, case=False)
+    # Verificar si el nombre de la franquicia en minúsculas está presente en la columna "name" en minúsculas
+    franquicias = df["name"].str.lower().str.contains(franquicia_lower, case=False)
     franquicias = pd.DataFrame(franquicias)
-    # Renombrar la columna "name_production_company" del DataFrame franquicias a "bool"
-    franquicias = franquicias.rename(columns={'name_production_company': 'bool'})
+    # Renombrar la columna "name" del DataFrame franquicias a "bool"
+    franquicias = franquicias.rename(columns={'name': 'bool'})
     # Concatenar el DataFrame franquicias con el DataFrame original df
     df2 = pd.concat([franquicias, df], axis=1)
     for i in df2["bool"]:

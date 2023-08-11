@@ -100,58 +100,157 @@ Se define una ruta raíz mediante el decorador @app.get("/"). Esta ruta se acced
 
 Se crea la variable **DOWNLOAD_ROOT** contiene una URL base que se utilizará más adelante en el código.
 
-Se define una nueva ruta en la API llamada "/peliculas_mes/{mes}". Esta ruta espera recibir un parámetro "mes" que representa el nombre de un mes en español.
+La función **peliculas_idioma** tiene como objetivo determinar cuántas películas están disponibles en un idioma específico en base a un archivo CSV que contiene información sobre diversas películas.
 
-Se define un diccionario para traducir los meses de ingles a españl, luego se crea la función **cantidad_filmaciones_mes** para calcular la cantidad de filmaciones que se estrenaron en un mes específico.
-Dentro de la función, se especifica la ruta relativa del archivo CSV que contiene los datos de las películas por día. Luego, se combina la URL base (**DOWNLOAD_ROOT**) con la ruta relativa para obtener la URL completa del archivo CSV.
-A continuación, se procede a leer el archivo CSV desde la URL completa y almacenar los datos en un DataFrame.
-Se convierte la columna **release_date** del DataFrame a tipo datetime utilizando pandas, luego, el mes ingresado se convierte a minúsculas para que coincida con los datos del DataFrame. Se verifica si el mes ingresado está presente en el diccionario que mapea los meses en español a los meses en inglés.
-Si el mes está presente en el diccionario, se obtiene la traducción al inglés. Se filtran las filas del DataFrame que corresponden al mes consultado, finalmente, se cuenta la cantidad de filmaciones en el mes consultado utilizando len(filmaciones_mes) y se devuelve un mensaje que indica la cantidad de películas estrenadas en ese mes.
-Si el mes ingresado no está en el diccionario, se devuelve un mensaje indicando que no es un mes en español.
+Primero, se define una ruta relativa al archivo CSV mediante la variable df_idioma.
 
-Se crea la función **cantidad_filmaciones_dia** que recibe como parámetro dia, que representa el día de la semana en español del cual se desea conocer la cantidad de filmaciones.
-El primer paso es definir un diccionario llamado dias_dict que mapea los nombres de los días de la semana en español a sus equivalentes en inglés. Esto se realiza para poder realizar una comparación adecuada con los datos del DataFrame.
-Luego, se lee un archivo CSV que contiene datos de filmaciones, utilizando la ruta relativa del archivo y la URL base para obtener la URL completa del archivo CSV. El archivo se lee y se almacena en el DataFrame.
-Después, se convierte la columna **release_date** del DataFrame de tipo string a tipo datetime.
-A continuación, se convierte el parámetro dia a minúsculas para asegurarnos de que coincida con los datos del DataFrame.
-Se verifica si el día ingresado está presente en el diccionario **dias_dict**. Si está presente, se obtiene su equivalente en inglés. Si el día ingresado no está en el diccionario, se retorna un mensaje indicando que no es un día en español válido.
-Si el día ingresado está en el diccionario, se filtran las películas que fueron estrenadas en el día consultado. Esto se realiza utilizando una comparación entre el nombre del día de la columna **release_date** y el día en inglés obtenido del diccionario. El resultado se almacena en una variable.
-Finalmente, se obtiene la cantidad de filmaciones en el día consultado utilizando la función y se retorna un mensaje indicando la cantidad de películas estrenadas en ese día.
+Luego, se combina la ruta relativa con una URL base (que se presume definida en otra parte del código) para obtener la ruta completa al archivo CSV, que se almacena en la variable csv_path.
 
-Se crea la función **score_titulo**  que busca la puntuación y la información relacionada de una película específica.
-En primer lugar, se establece la ruta relativa del archivo CSV que contiene los datos de puntuación de las películas en una variable. Luego, se combina la URL base con la ruta relativa para obtener la URL completa del archivo CSV. A continuación, se lee el archivo CSV desde la URL completa y se almacena en un DataFrame.
-El título de la película ingresado se convierte a minúsculas para asegurar una comparación adecuada con los datos del DataFrame.
-A continuación, se itera sobre los títulos de las películas en la columna **title** del DataFrame. Para cada título de película, se convierte a minúsculas y se verifica si coincide con el título ingresado. Si hay una coincidencia, se procede a filtrar el DataFrame para obtener los datos de la película encontrada.
-Se obtienen datos específicos de la película encontrada, como el título, el año de estreno y el score/popularidad, utilizando la función **iloc** para acceder a las filas y columnas correspondientes en el DataFrame filtrado.
-Por último, se retorna un mensaje que contiene los datos de la película encontrada, incluyendo el título, el año de estreno y el score/popularidad.
-Si no se encuentra ninguna película con el título ingresado en la lista, se retorna un mensaje indicando que no se encontró la película.
+Se utiliza la biblioteca Pandas para leer el contenido del archivo CSV desde la ruta completa definida en csv_path, creando un DataFrame llamado df_idioma.
 
-Se crea la función **votos_titulo** busca la información de votos de una película específica.
-En primer lugar, se establece la ruta relativa del archivo CSV que contiene los datos de votos de las películasen una variable. Luego, se combina la URL base con la ruta relativa para obtener la URL completa del archivo CSV. A continuación, se lee el archivo CSV desde la URL completa y se almacena en el DataFrame.
-El título de la película ingresado se convierte a minúsculas para asegurar una comparación adecuada con los datos del DataFrame.
-A continuación, se itera sobre los títulos de las películas en la columna "title" del DataFrame. Para cada título de película, se convierte a minúsculas y se verifica si coincide con el título ingresado. Si hay una coincidencia, se procede a filtrar el DataFrame para obtener los datos de la película encontrada.
-Se crea un DataFrame diferente con las columnas **title, vote_count, vote_average y release_year**. Luego, se filtra el DataFrame para obtener las filas con el título de la película actual.
-A continuación, se itera sobre los valores de **vote_count** en el DataFrame filtrado. Si el valor  es mayor o igual a 2000, se obtienen los valores de la primera fila del DataFrame filtrado, que corresponden al título de la película, el total de votos, el promedio de votos y el año de estreno. Luego, se devuelve un mensaje que contiene esta información.
-Si el valor de la columna es menor a 2000, se devuelve un mensaje indicando que la película no cumple con la condición de tener al menos 2000 votos.
-Si el título de la película no se encuentra en la lista, se devuelve un mensaje indicando que no es una película de la lista.
+Del DataFrame df_idioma, se selecciona solamente la columna "language" para crear un nuevo DataFrame llamado df, que contiene únicamente información sobre los idiomas de las películas.
 
-Se crea la función **get_actor** que busca información sobre la participación de un actor en películas.
-En primer lugar, se establece la ruta relativa del archivo CSV que contiene los datos de actores, Luego, se combina la URL base con la ruta relativa para obtener la URL completa del archivo CSV. A continuación, se utiliza la función para leer el archivo CSV desde la URL completa y se almacena en un DataFrame
-Se seleccionan las columnas **cast_name y return** del DataFrame, que corresponden al nombre del actor y al retorno de cada película en la que participó.
-Luego, se realiza una búsqueda en la columna **cast_name** para verificar si el nombre del actor ingresado está presente. El resultado de la búsqueda se convierte en un DataFrame llamado peliculas_participante. Se renombra la columna **cast_name** del DataFrame a **bool** para indicar si el actor participó o no en cada película.
-A continuación, se concatena el DataFrame obtenido anteriormente con el DataFrame original para tener toda la información en un solo DataFrame.
-Se itera sobre los valores de la columna **bool** en el DataFrame. Si se encuentra al menos un valor True, se filtran las filas del DataFrame donde el valor de la columna es True, es decir, donde el actor participó en la película. Se calcula el total de películas en las que el actor ha participado, el retorno total obtenido por el actor y el promedio de retorno por película.
+Se realiza una búsqueda en la columna "language" del DataFrame df para determinar si el idioma proporcionado está presente en alguna de las entradas. La búsqueda se realiza sin considerar las diferencias entre mayúsculas y minúsculas (case=False).
 
-La función **get_director** busca información sobre las películas dirigidas por un director específico.
-En primer lugar, se establece la ruta relativa del archivo CSV que contiene los datos de directores y películas, luego, se combina la URL base con la ruta relativa para obtener la URL completa del archivo CSV. A continuación, se utiliza la función para leer el archivo CSV desde la URL completa y se almacena en el DataFrame.
-Se seleccionan las columnas relevantes del DataFrame, que incluyen el trabajo del director, su nombre, la fecha de estreno de la película, el retorno, los ingresos y el presupuesto de la película, y el título de la película.
-Luego, se realiza una búsqueda en la columna **crew_name** para verificar si el nombre del director ingresado está presente. El resultado de la búsqueda se convierte en un DataFrame. Se renombra la columna **crew_name** del DataFrame a **bool** para indicar si el director dirigió o no cada película.
-A continuación, se concatena el DataFrame obtenido anteriormente con el DataFrame original. para tener toda la información en un solo DataFrame.
-Se itera sobre los valores de la columna **bool**. Si se encuentra al menos un valor True, se filtran las filas del DataFrame donde el valor es True, es decir, donde el director ha dirigido la película. Se seleccionan las columnas relevantes en el DataFrame resultante y se crea una lista para almacenar los resultados.
-Luego, se itera sobre las filas del DataFrame. En cada iteración, se obtiene el título de la película, el retorno, los ingresos y el presupuesto. Se agrega un mensaje a la lista con esta información.
-Finalmente, se devuelve la lista, que contiene los mensajes con la información de las películas dirigidas por el director especificado.
-Si no se encuentra ninguna coincidencia, se devuelve un mensaje indicando que el director no ha dirigido ninguna película de la lista.
+Los resultados de la búsqueda se almacenan en un nuevo DataFrame llamado peliculas. Cada fila de este DataFrame contiene un valor booleano que indica si la película está en el idioma especificado.
 
+Se renombra la columna "language" en el DataFrame peliculas a "bool" para reflejar que los valores son booleanos que representan si la película está en el idioma deseado.
+
+Se concatena el DataFrame peliculas con el DataFrame original df, creando un nuevo DataFrame llamado df2. Este DataFrame incluye tanto la columna booleana "bool" como la columna original "language".
+
+Luego, se itera a través de los valores de la columna "bool" en el DataFrame df2.
+
+Si en algún punto durante la iteración se encuentra un valor True, significa que al menos una película está en el idioma especificado. En este caso, se filtran las filas del DataFrame df2 donde el valor de "bool" es True, lo que significa que solo se retienen las películas en el idioma deseado. A continuación, se calcula el número total de películas en ese idioma y se retorna un mensaje que indica cuántas películas están disponibles en dicho idioma.
+
+Si durante la iteración no se encuentra ningún valor True, significa que no hay películas en el idioma especificado. En este caso, la función devuelve un mensaje que informa que no existen películas en ese idioma.
+
+La función **peliculas_duracion** tiene como objetivo obtener información sobre la duración y el año de estreno de una película específica en base a un archivo CSV que contiene datos sobre diversas películas y sus puntuaciones.
+
+Primero, la función carga un archivo CSV desde una ruta relativa definida en la variable df_duracion.
+
+Luego, la ruta completa al archivo CSV se construye concatenando una URL base (que se asume definida en otro lugar del código) con la ruta relativa. El resultado se almacena en la variable csv_path.
+
+Se utiliza la biblioteca Pandas para leer el contenido del archivo CSV desde la ruta completa definida en csv_path, creando un DataFrame llamado df_duracion.
+
+Del DataFrame df_duracion, se seleccionan las columnas "title", "release_year" y "runtime" para crear un nuevo DataFrame llamado df, que contiene información sobre el título de la película, el año de estreno y la duración.
+
+Se inicializan las variables dato1 y dato2 con el valor None. Estas variables se utilizarán para almacenar los datos de interés después de realizar ciertas operaciones.
+
+El título de la película ingresado se convierte a minúsculas mediante la variable pelicula_lower.
+
+Luego, se verifica si el título de la película en minúsculas está presente en la columna "title" del DataFrame df_duracion, también en minúsculas. Si el título se encuentra en el DataFrame, se procede a realizar algunas operaciones.
+
+Se filtra el DataFrame df_duracion para retener únicamente las filas donde el título de la película coincide con el título ingresado en minúsculas.
+
+Se obtienen los valores de la fila filtrada: el año de estreno se almacena en la variable dato1 (en la primera columna de esa fila) y la duración se almacena en la variable dato2 (en la segunda columna de esa fila).
+
+Se construye un mensaje de salida utilizando los valores obtenidos. Si tanto dato1 como dato2 no son None, significa que se encontró información sobre la película y se devuelve un mensaje que muestra el título de la película en formato de título (inicial en mayúscula) junto con su duración y año de estreno.
+
+Si los valores dato1 o dato2 siguen siendo None, significa que no se encontró información para la película ingresada. En este caso, se devuelve un mensaje que informa que no se encontró información sobre la película.
+
+La función **franquicia** tiene como objetivo obtener información sobre la ganancia total y el promedio de ganancia de una franquicia específica, basándose en un archivo CSV que contiene datos sobre diversas franquicias y sus ingresos.
+
+Inicialmente, la función carga un archivo CSV desde una ruta relativa definida en la variable df_franquicia.
+
+Luego, la ruta completa al archivo CSV se construye concatenando una URL base (que se asume definida en otro lugar del código) con la ruta relativa. El resultado se almacena en la variable csv_path.
+
+Se utiliza la biblioteca Pandas para leer el contenido del archivo CSV desde la ruta completa definida en csv_path, creando un DataFrame llamado df_franquicia.
+
+Del DataFrame df_franquicia, se seleccionan las columnas "name_production_company" (nombre de la compañía productora) y "revenue" (ingresos) para crear un nuevo DataFrame llamado df, que contiene información relevante para cada franquicia.
+
+El nombre de la franquicia ingresado se convierte a minúsculas mediante la variable franquicia_lower.
+
+Se verifica si el nombre de la franquicia en minúsculas está presente en la columna "name_production_company" del DataFrame df_franquicia, también en minúsculas. Si la franquicia se encuentra en el DataFrame, se procede a realizar algunas operaciones.
+
+Se realiza una búsqueda en la columna "name_production_company" para determinar si el nombre de la franquicia ingresado está presente. Los resultados de la búsqueda (indicando si la franquicia está presente o no) se almacenan en un DataFrame llamado franquicias.
+
+La columna "name_production_company" en el DataFrame franquicias se renombra a "bool" para indicar que los valores son booleanos que representan la presencia o ausencia de la franquicia.
+
+Se concatena el DataFrame franquicias con el DataFrame original df, creando un nuevo DataFrame llamado df2. Este DataFrame incluye tanto la columna booleana "bool" como la columna original "revenue".
+
+Se itera a través de los valores de la columna booleana "bool" en el DataFrame df2.
+
+Si se encuentra al menos una ocurrencia True en la columna "bool", se filtran las filas del DataFrame df2 para retener solo las filas donde el valor de "bool" es True. Luego se calcula la ganancia total de la franquicia y el promedio de ganancia. Estos valores se utilizan para construir un mensaje de salida que muestra la ganancia total y el promedio de ganancia para la franquicia ingresada.
+
+Si durante la iteración no se encuentra ninguna ocurrencia True en la columna "bool", significa que la franquicia ingresada no está presente en el DataFrame. En este caso, la función devuelve un mensaje que indica la ausencia de datos para esa franquicia.
+
+La función **peliculas_pais** tiene como objetivo determinar cuántas películas fueron filmadas en un país específico, utilizando un archivo CSV que contiene información sobre películas y sus países de producción.
+
+Al principio, la función carga un archivo CSV desde una ruta relativa definida en la variable df_pais.
+
+Luego, se construye la ruta completa al archivo CSV concatenando una URL base (que se asume definida en otro lugar del código) con la ruta relativa. El resultado se almacena en la variable csv_path.
+
+La biblioteca Pandas se utiliza para leer el contenido del archivo CSV desde la ruta completa definida en csv_path, creando un DataFrame llamado df_pais.
+
+Del DataFrame df_pais, se selecciona únicamente la columna "name_country" (nombre del país) para crear un nuevo DataFrame llamado df, que contiene información sobre los países de producción de las películas.
+
+El nombre del país ingresado se utiliza para realizar una búsqueda en la columna "name_country" del DataFrame df, considerando si el nombre del país está presente (insensible a mayúsculas y minúsculas) en la columna.
+
+Los resultados de la búsqueda se almacenan en un DataFrame llamado paises.
+
+La columna "name_country" en el DataFrame paises se renombra a "bool" para indicar que los valores son booleanos que representan la presencia o ausencia del país.
+
+Se concatena el DataFrame paises con el DataFrame original df, creando un nuevo DataFrame llamado df2. Este DataFrame incluye tanto la columna booleana "bool" como la columna original "name_country".
+
+Se itera a través de los valores de la columna booleana "bool" en el DataFrame df2.
+
+Si se encuentra al menos una ocurrencia True en la columna "bool", se filtran las filas del DataFrame df2 para retener solo las filas donde el valor de "bool" es True. Luego se calcula el total de películas que fueron filmadas en el país ingresado. Este valor se utiliza para construir un mensaje de salida que indica la cantidad total de películas filmadas en ese país.
+
+Si durante la iteración no se encuentra ninguna ocurrencia True en la columna "bool", significa que el país ingresado no está presente en el DataFrame. En este caso, la función devuelve un mensaje que indica la ausencia de datos para ese país.
+
+La función **productoras_exitosas** tiene como objetivo proporcionar información sobre el éxito financiero de una productora específica, utilizando un archivo CSV que contiene datos sobre distintas productoras y sus ingresos.
+
+La función comienza cargando un archivo CSV desde una ruta relativa definida en la variable df_productoras.
+
+Luego, se construye la ruta completa al archivo CSV concatenando una URL base (que se asume definida en otro lugar del código) con la ruta relativa. El resultado se almacena en la variable csv_path.
+
+Se utiliza la biblioteca Pandas para leer el contenido del archivo CSV desde la ruta completa definida en csv_path, creando un DataFrame llamado df_productoras.
+
+Del DataFrame df_productoras, se seleccionan las columnas "name_production_company" (nombre de la compañía productora) y "revenue" (ingresos) para crear un nuevo DataFrame llamado df, que contiene información relevante para cada productora.
+
+El nombre de la productora ingresado se utiliza para realizar una búsqueda en la columna "name_production_company" del DataFrame df, considerando si el nombre de la productora está presente (insensible a mayúsculas y minúsculas) en la columna.
+
+Los resultados de la búsqueda se almacenan en un DataFrame llamado productoras.
+
+La columna "name_production_company" en el DataFrame productoras se renombra a "bool" para indicar que los valores son booleanos que representan la presencia o ausencia de la productora.
+
+Se concatena el DataFrame productoras con el DataFrame original df, creando un nuevo DataFrame llamado df2. Este DataFrame incluye tanto la columna booleana "bool" como la columna original "revenue".
+
+Se itera a través de los valores de la columna booleana "bool" en el DataFrame df2.
+
+Si se encuentra al menos una ocurrencia True en la columna "bool", se filtran las filas del DataFrame df2 para retener solo las filas donde el valor de "bool" es True. Luego se calcula la ganancia total de la productora y el total de películas producidas por la misma. Estos valores se utilizan para construir un mensaje de salida que muestra la ganancia total y el total de películas producidas por la productora ingresada.
+
+Si durante la iteración no se encuentra ninguna ocurrencia True en la columna "bool", significa que la productora ingresada no está presente en el DataFrame. En este caso, la función devuelve un mensaje que indica la ausencia de datos para esa productora.
+
+La función **get_director** tiene como objetivo obtener información sobre las películas dirigidas por un director específico utilizando un archivo CSV que contiene información sobre diversas películas y sus equipos de producción.
+
+Se define una ruta relativa al archivo CSV en la variable df_director.
+
+La ruta completa al archivo CSV se construye concatenando una URL base (que se asume definida en otro lugar del código) con la ruta relativa. El resultado se almacena en la variable csv_path.
+
+Se utiliza la biblioteca Pandas para leer el contenido del archivo CSV desde la ruta completa definida en csv_path, creando un DataFrame llamado df_director.
+
+Del DataFrame df_director, se seleccionan las columnas relevantes para la información deseada, como el trabajo del equipo, el nombre del equipo (director), la fecha de lanzamiento, el retorno, los ingresos, el presupuesto y el título de la película. Esto crea un nuevo DataFrame llamado df.
+
+Se realiza una búsqueda en la columna "crew_name" (nombre del equipo) del DataFrame df para determinar si el nombre del director está presente. La búsqueda es insensible a mayúsculas y minúsculas (case=False).
+
+Los resultados de la búsqueda se almacenan en un DataFrame llamado peliculas_director.
+
+La columna "crew_name" en el DataFrame peliculas_director se renombra a "bool" para indicar que los valores son booleanos que representan si el director está asociado con la película.
+
+Se concatena el DataFrame peliculas_director con el DataFrame original df, creando un nuevo DataFrame llamado df2. Este DataFrame incluye tanto la columna booleana "bool" como las columnas originales del DataFrame df.
+
+Se itera a través de los valores de la columna booleana "bool" en el DataFrame df2.
+
+Si se encuentra al menos una ocurrencia True en la columna "bool", se filtran las filas del DataFrame df2 para retener solo las filas donde el valor de "bool" es True. Luego, se seleccionan las columnas relevantes ("title", "return", "revenue" y "budget") del DataFrame filtrado df2 para obtener información sobre las películas dirigidas por el director.
+
+Se crea una lista vacía llamada list_peliculas que se utilizará para almacenar información sobre las películas dirigidas por el director.
+
+Se itera a través de las filas del DataFrame peliculas_director. Para cada película, se extraen los valores relevantes (título, retorno, ingresos y presupuesto) y se construye un mensaje que contiene esta información. El mensaje se agrega a la lista list_peliculas.
+
+Una vez que se han procesado todas las películas, la función devuelve la lista list_peliculas, que contiene mensajes individuales para cada película dirigida por el director.
+
+Si durante la iteración no se encuentra ninguna ocurrencia True en la columna "bool", significa que el director ingresado no está presente en el DataFrame. En este caso, la función devuelve un mensaje que indica que el director no ha dirigido ninguna película de la lista.
 ## Sistema de recomendación
 Para este pedazo del proyecto intentare explicar de manera mas detallas y mas clara cada paso que se hizo para realizar este modelo:
 

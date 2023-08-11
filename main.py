@@ -19,7 +19,7 @@ DOWNLOAD_ROOT = "https://raw.githubusercontent.com/Andresma9601/Proyecto_ML_HENR
 # Función para calcular la cantidad de filmaciones en un idioma determinado
 def peliculas_idioma(idioma: str):
     # Ruta relativa del archivo CSV
-    df_idioma="db_movies/.csv"
+    df_idioma="db_movies/idioma.csv"
     # Combinar la URL base y la ruta relativa para obtener la URL completa del archivo CSV
     csv_path=DOWNLOAD_ROOT + df_idioma
     # Leer el archivo CSV desde la URL completa utilizando la función read_csv de Pandas

@@ -182,4 +182,4 @@ Para este pedazo del proyecto intentare explicar de manera mas detallas y mas cl
 13. Finalmente, se devuelve la lista de títulos de películas similares como resultado.
 
 ## Dirección de la API
-Aca puedes entrar a hacer tus consultas https://peliculas-2c5w.onrender.com/docs
+Aca puedes entrar a hacer tus consultas https://proyecto-peliculas-8iw2.onrender.com/docs

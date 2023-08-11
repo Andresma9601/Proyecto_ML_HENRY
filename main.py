@@ -52,7 +52,7 @@ def peliculas_idioma(idioma: str):
 # Función para calcular la duracion de las peliculas.
 def peliculas_duracion(pelicula: str):
     # Cargar el archivo CSV en un DataFrame
-    df_duracion="db_movies/Score.csv"
+    df_duracion="db_movies/runtime.csv"
     csv_path = DOWNLOAD_ROOT + df_duracion
     df_duracion = pd.read_csv(csv_path)
     # Seleccionar las columnas "title", "release_year" y "runtime" del DataFrame df_duracion

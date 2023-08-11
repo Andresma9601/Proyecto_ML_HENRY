@@ -43,9 +43,9 @@ def peliculas_idioma(idioma: str):
             # Calcular el total de películas en las que el idioma está presente
             total_peliculas = sum(peliculas["bool"])
             return f"{total_peliculas} peliculas estan en idioma {idioma}"
-        else:
-            # Devolver un mensaje indicando que no hay películas en ese idioma
-            return f"No hay peliculas en este idioma"
+    else:
+        # Devolver un mensaje indicando que no hay películas en ese idioma
+        return f"No hay peliculas en este idioma"
 
 # Diccionario de dias en español e inglés
 @app.get("/peliculas_duracion/{pelicula}")
